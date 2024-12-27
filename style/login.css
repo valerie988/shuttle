@@ -32,8 +32,7 @@ form{
         border-radius: 5px;
         border: black solid 1px;
         margin-top: 5px;
-        width: 200px;
-
+        width: 300px;
     }
 }
 button{
@@ -46,3 +45,7 @@ button{
     margin-top: 50px;
     margin-left: 10px;
     }
+button:hover{
+    cursor: pointer;
+    background-color: rgb(219, 142, 0);
+}
