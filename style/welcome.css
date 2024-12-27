@@ -23,7 +23,7 @@ a{
 .top{
     img{
         width:388.5px;
-        height: 500px;
+        height: 400px;
     }
 }
 .bottom{
@@ -32,10 +32,10 @@ a{
     align-items: center;
     justify-content: center;
     padding: 40px;
-    height: 21.3em;
+    height: 27.4em;
     width: 390px;
     h2{
-        margin-top: 30px;
+        margin-top: 70px;
         text-align: center;
         font-size: large;
     }
