@@ -27,6 +27,7 @@ a{
 }
 form{
     margin-top: 60px;
+    margin-left: 50px;
     input{
         padding: 6px;
         border-radius: 5px;
@@ -43,7 +44,7 @@ button{
     border: none;
     width: 130px;
     margin-top: 50px;
-    margin-left: 10px;
+    margin-left: 130px;
     }
 button:hover{
     cursor: pointer;
