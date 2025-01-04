@@ -1,3 +1,5 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
 *{
     box-sizing: border-box;
     padding: 0;
@@ -7,7 +9,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: poppins;
 }
 main{
     width: 420px;
@@ -28,14 +30,14 @@ a{
     color: white;
     background-color:  rgb(3, 61, 3);
     align-items: center;
+    text-align: center;
     justify-content: center;
     padding: 40px;
     height: 27.4em;
     width: 420px;
-    h2{
+    h1{
         margin-top: 70px;
-        text-align: center;
-        font-size: large;
+        margin-bottom: 30px;
     }
 }
 button{
@@ -46,7 +48,7 @@ button{
     border: none;
     width: 150px;
     margin-top: 70px;
-    margin-left: 80px;
+    margin-left: 20px;
     }
     button:hover{
         cursor: pointer;
