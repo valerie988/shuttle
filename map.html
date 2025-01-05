@@ -1,51 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
-
-    <title>Document</title>
+  <title>Leaflet Map with Markers</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 500px; /* Set the height of the map */
+      width: 100%; /* Set the width of the map */
+    }
+  </style>
 </head>
 <body>
-    <main>
-        <p>map</p>
-        <div id="map"></div>
-    </main>
+  <h2>Map with Markers</h2>
+  <div id="map"></div>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Step 1: Initialize the map
+    const map = L.map('map').setView([51.505, -0.09], 13); // Latitude, Longitude, Zoom Level
+
+    // Step 2: Add a tile layer (OpenStreetMap in this case)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Step 3: Add markers to the map
+    const marker1 = L.marker([51.505, -0.09]).addTo(map)
+      .bindPopup('<b>Hello!</b><br>This is London.')
+      .openPopup();
+
+    const marker2 = L.marker([51.515, -0.1]).addTo(map)
+      .bindPopup('<b>Another Marker</b><br>Near London.');
+
+    // Step 4: Add a circle to highlight an area
+    const circle = L.circle([51.508, -0.11], {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0.5,
+      radius: 500
+    }).addTo(map)
+      .bindPopup('A circle around this location.');
+  </script>
 </body>
-<script>
-    var map = L.map('map').fitWorld();
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-}).addTo(map);
-
-map.locate({setView: true, maxZoom: 16});
-
-function onLocationFound(e) {
-    var radius = e.accuracy;
-
-    L.marker(e.latlng).addTo(map)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-    L.circle(e.latlng, radius).addTo(map);
-}
-
-map.on('locationfound', onLocationFound);
-
-function onLocationError(e) {
-    alert(e.message);
-}
-
-map.on('locationerror', onLocationError);
-</script>
 </html>
