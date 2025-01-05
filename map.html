@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Leaflet Map with Markers</title>
+  <title>University of Buea Map</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -15,14 +15,15 @@
   </style>
 </head>
 <body>
-  <h2>Map with Markers</h2>
+  <h2>Map of the University of Buea</h2>
+  <p>Click on the map to drop a pin. Click on a pin to remove it.</p>
   <div id="map"></div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     // Step 1: Initialize the map
-    const map = L.map('map').setView([51.505, -0.09], 13); // Latitude, Longitude, Zoom Level
+    const map = L.map('map').setView([4.1489, 9.2879], 16); // Center the map on University of Buea
 
     // Step 2: Add a tile layer (OpenStreetMap in this case)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -30,22 +31,24 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Step 3: Add markers to the map
-    const marker1 = L.marker([51.505, -0.09]).addTo(map)
-      .bindPopup('<b>Hello!</b><br>This is London.')
-      .openPopup();
+    // Step 3: Create an empty layer group to hold markers
+    const markersLayer = L.layerGroup().addTo(map);
 
-    const marker2 = L.marker([51.515, -0.1]).addTo(map)
-      .bindPopup('<b>Another Marker</b><br>Near London.');
+    // Step 4: Add functionality to drop pins on map click
+    map.on('click', function (e) {
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
 
-    // Step 4: Add a circle to highlight an area
-    const circle = L.circle([51.508, -0.11], {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5,
-      radius: 500
-    }).addTo(map)
-      .bindPopup('A circle around this location.');
+      // Create a new marker at the clicked location
+      const marker = L.marker([lat, lng]).addTo(markersLayer);
+
+      // Add a popup to remove the marker
+      marker.bindPopup('<b>Click to remove</b>').on('popupopen', function () {
+        marker.on('click', function () {
+          markersLayer.removeLayer(marker); // Remove marker on click
+        });
+      });
+    });
   </script>
 </body>
 </html>
