@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>University of Buea - User Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      #map {
+        height: 500px; /* Set the height of the map */
+        width: 100%; /* Set the width of the map */
+      }
+      #controls {
+        display: flex;
+      }
+    </style>
+    <link rel="stylesheet" href="style/passenger.css">
+  </head>
+
+  <body>
+    <main>
+      <h1>Where would you like to go to ?</h1>
+      <div id="map"></div>
+      <section class="section">
+ 
+     <label for="name">Pickup: </label>
+     <input type="text" name="pickup" id="form-input"><br><br>
+     <label for="name">Drop Off: </label>
+     <input type="text" name="dropoff" id="form-input">
+    <div id="controls">
+      <button id="share-location">Share Location</button>
+      <button id="share-location"><a href="payment.html">Book Ride</a></button>
+      
+    </div>
+    <p id="status"></p>
+  </section>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      // Step 1: Initialize the map
+      const map = L.map("map").setView([4.1489, 9.2879], 16); // Center on University of Buea
+
+      // Step 2: Add a tile layer (OpenStreetMap in this case)
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(map);
+
+      // Step 3: Marker state
+      let userMarker = null;
+
+      // Step 4: Add click listener to set user's location
+      map.on("click", function (e) {
+        const { lat, lng } = e.latlng;
+
+        // Remove existing marker if one exists
+        if (userMarker) map.removeLayer(userMarker);
+
+        // Add a new marker
+        userMarker = L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup("Your Location")
+          .openPopup();
+
+        // Save user's location to localStorage
+        localStorage.setItem("userLocation", JSON.stringify({ lat, lng }));
+      });
+
+      // Step 5: Share location with the driver
+      document
+        .getElementById("share-location")
+        .addEventListener("click", function () {
+          if (!userMarker) {
+            document.getElementById("status").innerText =
+              "Please set your location first!";
+            return;
+          }
+
+          document.getElementById("status").innerText =
+            "Location shared with the driver!";
+        });
+
+      // Step 6: Show driver's location
+      function updateDriverLocation() {
+        const driverLocation = JSON.parse(
+          localStorage.getItem("driverLocation")
+        );
+
+        if (driverLocation) {
+          const { lat, lng } = driverLocation;
+          L.circleMarker([lat, lng], { color: "green", radius: 8 })
+            .addTo(map)
+            .bindPopup("Driver");
+        }
+      }
+
+      // Periodically check for driver's location
+      setInterval(updateDriverLocation, 3000);
+
+      L.Control.geocoder({
+        defaultMarkGeocode: false,
+      })
+        .on("markgeocode", function (e) {
+          const { center } = e.geocode;
+          map.setInterval(center, 16);
+          L.marker(center).addTo(map).bindPopup(e.geocode.name).openPopup();
+        })
+        .addTo(map);
+    </script>
+    </main>
+  </body>
+</html>

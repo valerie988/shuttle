@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>University of Buea - Driver Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="style/driver.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 800px; /* Set the height of the map */
+      width: 420px; /* Set the width of the map */
+    }
+  </style>
+   
+</head>
+
+<body>
+<div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Step 1: Initialize the map
+    const map = L.map('map').setView([4.1489, 9.2879], 16); // Center on University of Buea
+
+    // Step 2: Add a tile layer (OpenStreetMap in this case)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Step 3: Marker state
+    let driverMarker = null;
+
+    // Step 4: Show user's location
+    function updateUserLocation() {
+      const userLocation = JSON.parse(localStorage.getItem('userLocation'));
+
+      if (userLocation) {
+        const { lat, lng } = userLocation;
+        L.circleMarker([lat, lng], { color: 'red', radius: 8 }).addTo(map).bindPopup('User');
+      }
+    }
+
+    // Step 5: Allow the driver to set their location
+    map.on('click', function (e) {
+      const { lat, lng } = e.latlng;
+
+      // Remove existing marker if one exists
+      if (driverMarker) map.removeLayer(driverMarker);
+
+      // Add a new marker
+      driverMarker = L.marker([lat, lng]).addTo(map).bindPopup('Your Location').openPopup();
+
+      // Save driver's location to localStorage
+      localStorage.setItem('driverLocation', JSON.stringify({ lat, lng }));
+    });
+
+    // Periodically check for user's location
+    setInterval(updateUserLocation, 3000);
+  </script>
+</body>
+</html>
