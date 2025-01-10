@@ -28,18 +28,20 @@ a{
  }
  .service{
     display: flex;
+    width: 22em;
     border: black solid 1px;
-    padding: 10px;
     margin-top: 30px;
-    gap: 20px;
     align-items: center;
+    color: rgb(4, 104, 4);
     border-radius: 10px;
     img{
-        width: 30px;
+        width: 34px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
     }
  }
  form{
-    margin-top: 70px;
+    margin-top: 90px;
     input{
         padding: 7px;
         border-radius: 5px;
@@ -49,17 +51,43 @@ a{
     }
  }
 
-button{
+#pay-now{
     padding: 15px;
     background-color: rgb(255, 165, 30);
-    color: rgb(2, 42, 2);
+    color: rgb(4, 104, 4);
     border-radius: 20px;
     border: none;
     width: 200px;
     margin-top: 80px;
     margin-left: 75px;
+
  }
- button:hover{
+ #pay-now:hover{
     cursor: pointer;
     background-color: rgb(219, 142, 0);
 }
+
+.payment-methods button {
+    padding: 10px 20px;
+   border-top-right-radius: 10px;
+   border-bottom-right-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    width: 20em;
+   
+  }
+
+  .payment-methods button.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .form-group {
+    margin: 15px 0;
+    margin-top: 20px;
+  }
+  #pay-now:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }

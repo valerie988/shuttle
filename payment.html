@@ -13,23 +13,108 @@
     </header>
     <div class="top">
     <h2>Payment</h2><br>
-    <p>Confirm a payment of <span>xxx</span> FCFA</p>
+    <p>Confirm a payment of <span>100</span> FCFA</p>
 </div>
     <h4>Select Payment Method</h4>
+    <div class="payment-methods">
     <div class="service">
-        <img src="image/IMG_1907.jpg" alt="mtn">
-        <b>MTN MOMO</b>
+        <img src="image/b5ed1389-fa9a-4f68-b6ec-5efa8d611449.jpg" alt="mtn">
+        <button id="mtn-button">MTN MOMO</button>
     </div>
     <div class="service">
         <img src="image/IMG_1909.JPG" alt="orange">
-        <b>ORANGE MONEY</b>
+        <button id="orange-button">ORANGE MONEY</button>
     </div>
-    <form action="">
-
-    <label for="number">Enter Phone Number</label><br>
-    <input type="tel" name="phone" id="phone"><br>
+</div><br><br>
+    <form class="form-group">
+    <label for="phone">Enter Phone Number</label><br>
+    <input type="tel" name="phone" id="phone" placeholder="237XXXXXXXXX"><br>
 </form>
-   <button>Confirm</button>
+   <button id="pay-now">Confirm</button>
 </main>
+<script>
+    let selectedPaymentMethod = null;
+
+    const mtnButton = document.getElementById("mtn-button");
+    const orangeButton = document.getElementById("orange-button");
+    const phoneInput = document.getElementById("phone");
+    const payNowButton = document.getElementById("pay-now");
+
+    // Payment method selection
+    mtnButton.addEventListener("click", () => {
+      selectedPaymentMethod = "mtn";
+      mtnButton.classList.add("active");
+      orangeButton.classList.remove("active");
+      enablePayNow();
+    });
+
+    orangeButton.addEventListener("click", () => {
+      selectedPaymentMethod = "orange";
+      orangeButton.classList.add("active");
+      mtnButton.classList.remove("active");
+      enablePayNow();
+    });
+
+    // Enable "Pay Now" button if both payment method and phone number are valid
+    phoneInput.addEventListener("input", enablePayNow);
+
+    function enablePayNow() {
+      if (selectedPaymentMethod && phoneInput.value.trim().length === 12) {
+        payNowButton.disabled = false;
+      } else {
+        payNowButton.disabled = true;
+      }
+    }
+
+    // Handle payment
+    payNowButton.addEventListener("click", () => {
+      const phoneNumber = phoneInput.value.trim();
+
+      if (!selectedPaymentMethod || phoneNumber.length !== 12) {
+        alert("Please select a payment method and enter a valid phone number.");
+        return;
+      }
+
+      alert(`Processing payment via ${selectedPaymentMethod.toUpperCase()} for phone number ${phoneNumber}...`);
+
+      // Perform the payment via the backend
+      makePayment(selectedPaymentMethod, phoneNumber);
+    });
+
+    // Mock function to handle payment
+    async function makePayment(method, phoneNumber) {
+      const amount = 100; // Example amount in XAF
+      const apiEndpoint =
+        method === "mtn"
+          ? "http://localhost:3000/api/mtn-payment"
+          : "http://localhost:3000/api/orange-payment";
+
+      const paymentData = {
+        phone: phoneNumber,
+        amount,
+      };
+
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(paymentData),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("Payment successful!");
+          console.log("Payment response:", result);
+        } else {
+          alert("Payment failed. Please try again.");
+          console.error("Payment error:", result);
+        }
+      } catch (error) {
+        alert("An error occurred during the payment process.");
+        console.error("Payment error:", error);
+      }
+    }
+</script>
 </body>
 </html>
