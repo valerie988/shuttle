@@ -86,7 +86,7 @@ header{
   }
 
   .payment-methods button.active {
-    background-color: #4CAF50;
+    background-color: rgb(1, 78, 1);
     color: white;
   }
 
