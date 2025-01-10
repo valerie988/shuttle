@@ -82,7 +82,6 @@ header{
     cursor: pointer;
     border: none;
     width: 20em;
-   
   }
 
   .payment-methods button.active {
